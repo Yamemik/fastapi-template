@@ -12,7 +12,6 @@ uvicorn = "^0.29.0"
 sqlalchemy = "^2.0.29"
 pydantic-settings = "^2.2.1"
 
-
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
