@@ -1,19 +1,17 @@
-FROM python:3.12-buster
+FROM python:3.12
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /code
+RUN pip3 install pipenv
 
-RUN apt-get update && \
-   apt install -y python3-dev
+WORKDIR /usr/src/app
 
-RUN pip install --upgrade pip
-RUN pip install poetry
-COPY pyproject.toml ./
-RUN poetry config virtualenvs.create false
-RUN poetry install --no-root --no-interaction --no-ansi
+COPY Pipfile ./
+COPY Pipfile.lock ./
 
-EXPOSE 8000
+RUN set -ex && pipenv install --deploy --system
 
 COPY . .
+
+EXPOSE 8000
