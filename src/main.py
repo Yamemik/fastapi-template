@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.common.settings import settings
+from common.config import settings
 
 
 def create_app():
