@@ -11,6 +11,7 @@ sqlalchemy = "*"
 asyncpg = "*"
 alembic = "*"
 passlib = "*"
+python-jose = "*"
 
 [dev-packages]
 
