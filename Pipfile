@@ -9,6 +9,8 @@ uvicorn = "*"
 pydantic-settings = "*"
 sqlalchemy = "*"
 asyncpg = "*"
+alembic = "*"
+passlib = "*"
 
 [dev-packages]
 

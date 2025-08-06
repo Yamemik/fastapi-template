@@ -1,31 +1,49 @@
-DC = docker compose
-APP_FILE = docker_compose/app.yaml
-STORAGE_FILE = docker_compose/storage.yaml
+# Названия сервисов и базовые переменные
+COMPOSE=docker-compose
+SERVICE=api
 
-.PHONY: app
-app:
-	${DC} -f ${APP_FILE} up -d
+# Команды
+up:
+	$(COMPOSE) up -d
 
-.PHONY: drop-app
-drop-app:
-	${DC} -f ${APP_FILE} down
+down:
+	$(COMPOSE) down
 
-.PHONY: all
-all:
-	${DC} -f ${APP_FILE} -f ${STORAGE_FILE} up --build -d
+build:
+	$(COMPOSE) build
 
-.PHONY: drop-all
-drop-all:
-	${DC} -f ${APP_FILE} -f ${STORAGE_FILE} down
+rebuild:
+	$(COMPOSE) down
+	$(COMPOSE) build --no-cache
+	$(COMPOSE) up -d
 
-.PHONY: storage
-storage:
-	${DC} -f ${STORAGE_FILE} up --build -d
-
-.PHONY: drop-storage
-drop:
-	${DC} -f ${STORAGE_FILE} down
-
-.PHONY: logs
 logs:
-	${DC} -f ${APP_FILE} -f ${STORAGE_FILE} logs -f
+	$(COMPOSE) logs -f $(SERVICE)
+
+sh:
+	$(COMPOSE) exec $(SERVICE) sh
+
+bash:
+	$(COMPOSE) exec $(SERVICE) bash
+
+migrate:
+	$(COMPOSE) exec $(SERVICE) alembic upgrade head
+
+makemigrations:
+	$(COMPOSE) exec $(SERVICE) alembic revision --autogenerate -m "new migration"
+
+psql:
+	$(COMPOSE) exec db psql -U postgres -d fastapi_app
+
+stop:
+	$(COMPOSE) stop
+
+start:
+	$(COMPOSE) start
+
+restart:
+	$(COMPOSE) restart
+
+# Очистка
+prune:
+	docker system prune -f

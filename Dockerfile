@@ -1,17 +1,33 @@
-FROM python:3.13
+# Используем официальный Python образ
+FROM python:3.13-slim
 
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
+# Устанавливаем рабочую директорию
+WORKDIR /app
 
-RUN pip3 install pipenv
+# Устанавливаем системные зависимости
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libpq-dev \
+        curl \
+        gcc \
+        git && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/app
+# Устанавливаем pipenv
+RUN pip install --upgrade pip && pip install pipenv
 
-COPY Pipfile ./
-COPY Pipfile.lock ./
+# Копируем только pipenv-файлы для установки зависимостей
+COPY Pipfile Pipfile.lock ./
 
-RUN set -ex && pipenv install --deploy --system
+# Устанавливаем зависимости в системную среду (не создавая venv)
+ENV PIPENV_VENV_IN_PROJECT=0
+RUN pipenv install --deploy --system
 
+# Копируем всё остальное
 COPY . .
 
-EXPOSE 8000
+# Указываем команду запуска
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
