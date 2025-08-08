@@ -12,6 +12,9 @@ asyncpg = "*"
 alembic = "*"
 passlib = "*"
 python-jose = "*"
+pydantic = {extras = ["email"], version = "*"}
+python-multipart = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

@@ -1,41 +1,37 @@
-import asyncio
-from logging.config import fileConfig
-
-from alembic import context
-from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import async_engine_from_config
-
-from src.config.settings import settings
-from src.db.base import Base
-from src.modules.users.models import User  # Импортируй все модели
-
+# src/db/run_migrations.py
 from alembic.config import Config
+from alembic.script import ScriptDirectory
+from alembic.runtime.migration import MigrationContext
+from alembic import command
+from sqlalchemy import create_engine
+from src.config.settings import settings
+import asyncio
 
 
-async def run_async_migrations():
-    alembic_cfg = Config("alembic.ini")
-    alembic_cfg.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
-
-    connectable = async_engine_from_config(
-        alembic_cfg.get_section(alembic_cfg.config_ini_section),
-        prefix="sqlalchemy.",
-        poolclass=pool.NullPool,
-        future=True,
-    )
-
-    async with connectable.connect() as connection:
-        context.configure(
-            connection=connection,
-            target_metadata=Base.metadata,
-            compare_type=True,
-            render_as_batch=True  # для SQLite
-        )
-
-        async with context.begin_transaction():
-            context.run_migrations()
-
-    await connectable.dispose()
+def get_alembic_config() -> Config:
+    cfg = Config("alembic.ini")
+    cfg.set_main_option("sqlalchemy.url", settings.DATABASE_URL_SYNC)  # sync-URL!
+    return cfg
 
 
-def run_migrations():
-    asyncio.run(run_async_migrations())
+def has_pending_migrations_sync() -> bool:
+    cfg = get_alembic_config()
+    script = ScriptDirectory.from_config(cfg)
+
+    engine = create_engine(settings.DATABASE_URL_SYNC)  # обычный sync engine
+    with engine.connect() as conn:
+        context = MigrationContext.configure(conn)
+        current_rev = context.get_current_revision()
+
+    head_rev = script.get_current_head()
+    return current_rev != head_rev
+
+
+async def run_migrations_if_needed():
+    loop = asyncio.get_running_loop()
+    if await loop.run_in_executor(None, has_pending_migrations_sync):
+        print("🔄 Обнаружены новые миграции, выполняем upgrade...")
+        await loop.run_in_executor(None, lambda: command.upgrade(get_alembic_config(), "head"))
+        print("✅ Миграции успешно применены.")
+    else:
+        print("✅ Миграции не требуются — всё в актуальном состоянии.")

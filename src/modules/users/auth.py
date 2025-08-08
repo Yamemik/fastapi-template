@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config.settings import settings
 from src.modules.users.crud import get_user_by_email
-from src.src.common.security import verify_password
+from src.common.security import verify_password
 from src.common.dependencies import get_db
 from src.modules.users.schemas import Token
 from src.modules.users.models import User

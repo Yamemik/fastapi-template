@@ -6,6 +6,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
     
     DATABASE_URL: str
+    DATABASE_URL_SYNC: str
     
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
