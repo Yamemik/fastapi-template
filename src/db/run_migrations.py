@@ -1,11 +1,11 @@
-# src/db/run_migrations.py
+import asyncio
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 from alembic.runtime.migration import MigrationContext
+
 from alembic import command
 from sqlalchemy import create_engine
 from src.config.settings import settings
-import asyncio
 
 
 def get_alembic_config() -> Config:

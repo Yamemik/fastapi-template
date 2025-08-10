@@ -14,14 +14,6 @@ router = APIRouter()
 async def create_user(user_in: schemas.UserCreate, db: AsyncSession = Depends(get_db)):
     return await services.register_user(user_in, db)
 
-
-
-# auth
-router = APIRouter(
-    prefix="/users",
-    tags=["Users"]
-)
-
 @router.post("/login", response_model=schemas.Token, tags=["Auth"])
 async def login_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),

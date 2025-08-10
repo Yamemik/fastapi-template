@@ -3,16 +3,18 @@ from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 
+from db.init_superuser import create_superuser_if_not_exists
 from src.db.run_migrations import run_migrations_if_needed
 from src.config.settings import settings
 from src.api.router import api_router
 from src.db.init_db import init_db
-from src.db.session import engine  # если нужно закрывать соединение
+from src.db.session import engine, async_session
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await run_migrations_if_needed()
+    
     await init_db()
     
     yield
@@ -28,7 +30,6 @@ app = FastAPI(
     title=f"{settings.APP_NAME} API docs",
     lifespan=lifespan
 )
-
     
 app.add_middleware(
     CORSMiddleware,
