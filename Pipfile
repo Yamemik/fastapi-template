@@ -4,8 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-fastapi = "*"
-uvicorn = "*"
 pydantic-settings = "*"
 sqlalchemy = "*"
 asyncpg = "*"
@@ -15,6 +13,9 @@ python-jose = "*"
 pydantic = {extras = ["email"], version = "*"}
 python-multipart = "*"
 psycopg2 = "*"
+fastapi = "*"
+uvicorn = "*"
+bcrypt = "*"
 
 [dev-packages]
 

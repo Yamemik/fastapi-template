@@ -8,6 +8,7 @@ from src.modules.users.crud import get_user_by_email
 from src.modules.users.models import User
 from src.common.dependencies import get_db
 
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 
 async def get_current_user(
