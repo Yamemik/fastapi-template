@@ -1,21 +1,37 @@
-from datetime import datetime
 from pydantic import BaseModel, EmailStr
+from typing import Optional
+from datetime import datetime
 
 
-class UserCreate(BaseModel):
+class UserBase(BaseModel):
     email: EmailStr
+    surname: str
+    name: str
+    patr: Optional[str] = None
+    is_admin: bool = False
+
+
+class UserCreate(UserBase):
     password: str
 
-    
-class UserRead(BaseModel):
+
+class UserUpdate(BaseModel):
+    email: Optional[EmailStr] = None
+    surname: Optional[str] = None
+    name: Optional[str] = None
+    patr: Optional[str] = None
+    password: Optional[str] = None
+    is_admin: Optional[bool] = None
+
+
+class UserOut(UserBase):
     id: int
-    email: EmailStr
     created_at: datetime
 
     class Config:
         from_attributes = True
 
-
+    
 class Token(BaseModel):
     access_token: str
     token_type: str = "bearer"
