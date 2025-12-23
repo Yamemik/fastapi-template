@@ -10,7 +10,7 @@ from src.config.settings import settings
 
 def get_alembic_config() -> Config:
     cfg = Config("alembic.ini")
-    cfg.set_main_option("sqlalchemy.url", settings.DATABASE_URL_SYNC)  # sync-URL!
+    cfg.set_main_option("sqlalchemy.url", settings.DATABASE_URL_SYNC)
     return cfg
 
 
@@ -18,7 +18,7 @@ def has_pending_migrations_sync() -> bool:
     cfg = get_alembic_config()
     script = ScriptDirectory.from_config(cfg)
 
-    engine = create_engine(settings.DATABASE_URL_SYNC)  # обычный sync engine
+    engine = create_engine(settings.DATABASE_URL_SYNC)
     with engine.connect() as conn:
         context = MigrationContext.configure(conn)
         current_rev = context.get_current_revision()

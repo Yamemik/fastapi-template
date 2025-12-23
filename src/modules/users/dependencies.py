@@ -1,46 +1,15 @@
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import jwt, JWTError
-from jose.exceptions import ExpiredSignatureError
+from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.config.settings import settings
-from src.modules.users.services import get_user
-from src.modules.users.models import User
-from src.common.dependencies import get_db
+from db.session import get_session
+from modules.users.infrastructure.repository import SqlAlchemyUserRepository
+from modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
+def get_user_repository(session: AsyncSession = Depends(get_session)):
+    return SqlAlchemyUserRepository(session)
 
-async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    db: AsyncSession = Depends(get_db)
-) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Invalid credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
-        user_id_str = payload.get("sub")
-        if not user_id_str:
-            raise credentials_exception
-        try:
-            user_id = int(user_id_str)
-        except ValueError:
-            raise credentials_exception
-    except ExpiredSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token expired",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    except JWTError:
-        raise credentials_exception
+def get_get_user_use_case(repo=Depends(get_user_repository)):
+    return GetUserUseCase(repo)
 
-    user = await get_user(db, user_id)
-    if not user:
-        raise credentials_exception
-
-    return user
+def get_list_users_use_case(repo=Depends(get_user_repository)):
+    return ListUsersUseCase(repo)
