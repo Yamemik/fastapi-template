@@ -1,9 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from src.modules.users.models import User
 from src.config.settings import settings
-from src.common.security import get_password_hash
 
 
 async def create_superuser_if_not_exists(db: AsyncSession):

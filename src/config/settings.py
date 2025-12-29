@@ -1,28 +1,33 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from modules.auth.infrastructure.registry import AuthType
 
 
 class Settings(BaseSettings):
     APP_NAME: str = "FastAPI Template"
     DEBUG: bool = True
-    
-    # db
+
+    # auth
+    AUTH_PROVIDER: AuthType = AuthType.LOCAL
+
+    # database
     DATABASE_URL: str
     DATABASE_URL_SYNC: str
-    
+
     # superuser
     SUPERUSER_NAME: str = "admin"
-    SUPERUSER_EMAIL: str = "kuancarlos@mail.ru"
-    SUPERUSER_PASSWORD: str
-    
-    # jwt    
+    SUPERUSER_EMAIL: str
+    SUPERUSER_PASSWORD: str | None = None
+
+    # jwt
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 1
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 15
+    REFRESH_TOKEN_EXPIRE_DAYS: int = 7
 
-    # bcrypt
-    BC_SECRET_KEY: str
-    
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore",
+    )
 
 
 settings = Settings()

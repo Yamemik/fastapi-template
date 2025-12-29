@@ -4,6 +4,7 @@ from modules.users.domain.entities import User
 from modules.users.domain.repositories import UserRepository
 from .models import UserModel
 
+
 class SqlAlchemyUserRepository(UserRepository):
     def __init__(self, session: AsyncSession):
         self.session = session

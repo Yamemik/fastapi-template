@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
-from modules.auth.dependencies import get_current_user
-from modules.auth.permissions import check_admin
+from modules.auth.api.dependencies import get_current_user
+from common.permissions import check_admin
 from modules.users.application.dto import UserDTO
 from modules.auth.domain.entities import User as AuthUser
 from modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
