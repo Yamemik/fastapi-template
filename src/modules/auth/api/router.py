@@ -16,12 +16,14 @@ async def login(
 ):
     return await auth_service.login(data)
 
+
 @router.post("/refresh")
 async def refresh(
     data: TokenRefreshRequest,
     service: RefreshService = Depends(get_refresh_service)
 ):
     return await service.refresh(data.refresh_token)
+
 
 @router.post("/logout")
 async def logout(
@@ -30,6 +32,7 @@ async def logout(
 ):
     await service.logout(data.refresh_token)
     return {"detail": "Logged out"}
+
 
 @router.get("/me")
 async def me(current_user=Depends(get_current_user)):

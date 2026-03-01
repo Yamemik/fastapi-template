@@ -6,6 +6,7 @@ class AuthProvider(ABC):
     async def authenticate(self, data) -> dict:
         """Логин / аутентификация"""
 
+
     @abstractmethod
     async def validate_token(self, token: str) -> dict:
         """Получение текущего пользователя"""
