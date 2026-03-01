@@ -1,8 +1,10 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from db.base import Base
 
+
 class UserModel(Base):
     __tablename__ = "users"
+    # __table_args__ = {"extend_existing": True}
 
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True, index=True)

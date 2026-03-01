@@ -1,25 +1,17 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
-
 from src.config.settings import settings
+from src.modules.users.infrastructure.repository import SqlAlchemyUserRepository
 
 
 async def create_superuser_if_not_exists(db: AsyncSession):
-    result = await db.execute(
-        select(User).where(User.username == settings.SUPERUSER_NAME)
-    )
-    superuser = result.scalar_one_or_none()
+    user_repo = SqlAlchemyUserRepository(db)
+    existing = await user_repo.get_by_email(settings.SUPERUSER_EMAIL)
 
-    if superuser is None:
-        superuser = User(
-            username=settings.SUPERUSER_NAME,
+    if existing is None:
+        await user_repo.create_superuser(
             email=settings.SUPERUSER_EMAIL,
-            hashed_password=get_password_hash(settings.SUPERUSER_PASSWORD),
-            is_superuser=True,
-            is_active=True
+            password=settings.SUPERUSER_PASSWORD
         )
-        db.add(superuser)
-        await db.commit()
-        print(f"✅ Superuser '{settings.SUPERUSER_NAME}' created")
+        print(f"✅ Superuser '{settings.SUPERUSER_EMAIL}' created")
     else:
-        print(f"ℹ Superuser '{settings.SUPERUSER_NAME}' already exists")
+        print(f"ℹ Superuser '{settings.SUPERUSER_EMAIL}' already exists")

@@ -12,7 +12,7 @@ from src.db.session import engine
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await run_migrations_if_needed()
+    # await run_migrations_if_needed()
     
     await init_db()
     

@@ -12,10 +12,11 @@ class Settings(BaseSettings):
     # database
     DATABASE_URL: str
     DATABASE_URL_SYNC: str
+    USE_MIGRATIONS: bool = True
 
     # superuser
     SUPERUSER_NAME: str = "admin"
-    SUPERUSER_EMAIL: str
+    SUPERUSER_EMAIL: str 
     SUPERUSER_PASSWORD: str | None = None
 
     # jwt
