@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 from alembic import context
 from src.config.settings import settings
 from src.db.base import Base
-# from src.modules.users.infrastructure.models import UserModel  # Импортируй все модели вручную!
+from src.modules.users.infrastructure.models import UserModel  # Импортируй все модели вручную!
 
 
 # Alembic Config object

@@ -1,5 +1,5 @@
-from modules.auth.domain.exceptions import InvalidCredentials, InvalidToken
-from modules.auth.infrastructure.providers.local_jwt import LocalJWTAuthProvider
+from src.modules.auth.domain.exceptions import InvalidCredentials, InvalidToken
+from src.modules.auth.infrastructure.providers.local_jwt import LocalJWTAuthProvider
 from ..api.schemas import LoginRequest 
 
 

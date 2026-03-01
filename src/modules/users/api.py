@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
-from modules.auth.api.dependencies import get_current_user
-from common.permissions import check_admin
-from modules.users.application.dto import UserDTO
-from modules.auth.domain.entities import User as AuthUser
-from modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
-from modules.users.dependencies import get_get_user_use_case, get_list_users_use_case
+from src.modules.auth.api.dependencies import get_current_user
+from src.common.permissions import check_admin
+from src.modules.users.application.dto import UserDTO
+from src.modules.auth.domain.entities import User as AuthUser
+from src.modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
+from src.modules.users.dependencies import get_get_user_use_case, get_list_users_use_case
 
 
 router = APIRouter(prefix="/users", tags=["Users"])

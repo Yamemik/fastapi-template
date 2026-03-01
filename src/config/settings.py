@@ -1,5 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from modules.auth.infrastructure.registry import AuthType
+from src.modules.auth.infrastructure.registry import AuthType
 
 
 class Settings(BaseSettings):

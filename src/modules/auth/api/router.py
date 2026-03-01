@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
 
-from modules.auth.api.dependencies import get_auth_service, get_refresh_service
-from modules.auth.api.schemas import LoginRequest, TokenRefreshRequest
-from modules.auth.application.auth_service import AuthService
-from modules.auth.application.refresh_service import RefreshService
-from modules.auth.api.dependencies import get_current_user
+from src.modules.auth.api.dependencies import get_auth_service, get_refresh_service
+from src.modules.auth.api.schemas import LoginRequest, TokenRefreshRequest
+from src.modules.auth.application.auth_service import AuthService
+from src.modules.auth.application.refresh_service import RefreshService
+from src.modules.auth.api.dependencies import get_current_user
 
 
 router = APIRouter(prefix="/auth", tags=["Auth"])

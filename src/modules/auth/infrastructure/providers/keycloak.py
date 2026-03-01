@@ -1,4 +1,4 @@
-from modules.auth.domain.interfaces import AuthProvider
+from src.modules.auth.domain.interfaces import AuthProvider
 
 
 class KeycloakAuthProvider(AuthProvider):

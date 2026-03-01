@@ -1,6 +1,6 @@
 from typing import Type
 
-from modules.auth.domain.types.auth_type import AuthType
+from src.modules.auth.domain.types.auth_type import AuthType
 
 from ..domain.interfaces import AuthProvider
 from ..infrastructure.providers.keycloak import KeycloakAuthProvider

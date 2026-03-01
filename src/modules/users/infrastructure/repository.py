@@ -1,8 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
-from modules.auth.infrastructure.utils.password import PasswordHasher
-from modules.users.domain.entities import User
-from modules.users.domain.repositories import UserRepository
+from src.modules.auth.infrastructure.utils.password import PasswordHasher
+from src.modules.users.domain.entities import User
+from src.modules.users.domain.repositories import UserRepository
 from .models import UserModel
 
 

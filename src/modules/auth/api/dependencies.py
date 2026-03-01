@@ -2,19 +2,19 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 
 # config / settings
-from config.dependencies import get_settings
+from src.config.dependencies import get_settings
 
 # users
-from modules.auth.application.refresh_service import RefreshService
-from modules.users.dependencies import get_user_repository
+from src.modules.auth.application.refresh_service import RefreshService
+from src.modules.users.dependencies import get_user_repository
 
 # auth
-from modules.auth.application.auth_service import AuthService
-from modules.auth.domain.types.auth_type import AuthType
-from modules.auth.domain.exceptions import InvalidToken
-from modules.auth.infrastructure.registry import get_auth_provider
-from modules.auth.infrastructure.utils.jwt_manager import JWTManager
-from modules.auth.infrastructure.utils.password import PasswordHasher
+from src.modules.auth.application.auth_service import AuthService
+from src.modules.auth.domain.types.auth_type import AuthType
+from src.modules.auth.domain.exceptions import InvalidToken
+from src.modules.auth.infrastructure.registry import get_auth_provider
+from src.modules.auth.infrastructure.utils.jwt_manager import JWTManager
+from src.modules.auth.infrastructure.utils.password import PasswordHasher
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")

@@ -1,6 +1,6 @@
-from modules.auth.domain.interfaces import AuthProvider
-from modules.auth.domain.models import AuthIdentity
-from modules.auth.domain.exceptions import InvalidCredentials, InvalidToken
+from src.modules.auth.domain.interfaces import AuthProvider
+from src.modules.auth.domain.models import AuthIdentity
+from src.modules.auth.domain.exceptions import InvalidCredentials, InvalidToken
 
 
 class LocalJWTAuthProvider(AuthProvider):

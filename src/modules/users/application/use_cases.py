@@ -1,4 +1,4 @@
-from modules.users.domain.repositories import UserRepository
+from src.modules.users.domain.repositories import UserRepository
 from .dto import UserDTO
 
 class GetUserUseCase:

@@ -1,4 +1,4 @@
-from modules.auth.domain.exceptions import InvalidToken
+from src.modules.auth.domain.exceptions import InvalidToken
 
 
 class RefreshService:

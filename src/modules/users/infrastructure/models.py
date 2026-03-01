@@ -1,12 +1,13 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from db.base import Base
+from src.db.base import Base
 
 
 class UserModel(Base):
     __tablename__ = "users"
-    # __table_args__ = {"extend_existing": True}
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(unique=True, index=True)
-    full_name: Mapped[str | None] = mapped_column(nullable=True)
+    email: Mapped[str] = mapped_column(unique=True, nullable=False)
+    hashed_password: Mapped[str] = mapped_column(nullable=False)
     is_active: Mapped[bool] = mapped_column(default=True)
+    is_superuser: Mapped[bool] = mapped_column(default=False)
+    full_name: Mapped[str] = mapped_column()

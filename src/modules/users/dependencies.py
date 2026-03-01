@@ -1,8 +1,8 @@
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from db.session import AsyncSessionLocal
-from modules.users.infrastructure.repository import SqlAlchemyUserRepository
-from modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
+from src.db.session import AsyncSessionLocal
+from src.modules.users.infrastructure.repository import SqlAlchemyUserRepository
+from src.modules.users.application.use_cases import GetUserUseCase, ListUsersUseCase
 
 
 def get_user_repository(session: AsyncSession = Depends(AsyncSessionLocal)):
