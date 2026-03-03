@@ -8,7 +8,7 @@ from src.modules.users.auth_service import AuthService
 from .schemas import UserCreate, UserUpdate, UserOut, UserOutWithoutToken, Token
 from .models import User
 from .dependencies import get_auth_service, get_current_user, get_user_service  # <- сервис через Depends
-from .services import UserService  # класс сервиса
+from .service import UserService  # класс сервиса
 
 
 class AuthRoutes:

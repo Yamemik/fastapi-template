@@ -1,13 +1,9 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from src.modules.auth.infrastructure.registry import AuthType
 
 
 class Settings(BaseSettings):
     APP_NAME: str = "FastAPI Template"
     DEBUG: bool = True
-
-    # auth
-    AUTH_PROVIDER: AuthType = AuthType.LOCAL
 
     # database
     DATABASE_URL: str

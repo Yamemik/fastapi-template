@@ -1,3 +1,5 @@
+# src/modules/users/service.py
+
 from src.config.settings import settings
 from src.common.security import get_password_hash
 from .repository import UserRepository
@@ -9,11 +11,11 @@ class UserService:
     def __init__(self, repo: UserRepository):
         self.repo = repo
 
-    async def get_user_by_id(self, user_id: int) -> User | None:
+    async def get_user(self, user_id: int) -> User | None:
         return await self.repo.get_by_id(user_id)
 
-    async def get_user_by_email_or_login(self, email: str) -> User | None:
-        ...
+    async def get_user_by_email(self, email: str) -> User | None:
+        return await self.repo.get_by_email(email)
 
     async def get_users(self, skip: int = 0, limit: int = 100):
         return await self.repo.get_all(skip, limit)
@@ -66,17 +68,16 @@ class UserService:
         return True
 
     async def create_superuser_if_not_exists(self) -> User:
-        existing_user = await self.repo.get_by_login(settings.SUPERUSER_EMAIL)
+        user = await self.repo.get_by_email(settings.SUPERUSER_EMAIL)
 
-        if existing_user:
-            return existing_user
+        if user:
+            return user
 
         superuser = User(
             email=settings.SUPERUSER_EMAIL,
             hashed_password=get_password_hash(settings.SUPERUSER_PASSWORD),
             surname="Admin",
             name="Admin",
-            patr=None,
             is_admin=True,
         )
 
@@ -85,4 +86,3 @@ class UserService:
         await self.repo.db.refresh(superuser)
 
         return superuser
-    
