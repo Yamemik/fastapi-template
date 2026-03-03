@@ -8,7 +8,7 @@ from src.modules.users.auth_service import AuthService
 from .schemas import UserCreate, UserUpdate, UserOut, UserOutWithoutToken, Token
 from .models import User
 from .dependencies import get_auth_service, get_current_user, get_user_service  # <- сервис через Depends
-from .service import UserService  # класс сервиса
+from .service import UserService
 
 
 class AuthRoutes:
@@ -21,7 +21,7 @@ class AuthRoutes:
         async def register(user_in: UserCreate,
                            service: UserService = Depends(get_user_service),
                            auth_service: AuthService = Depends(get_user_service)):
-            existing = await service.get_user_by_email_or_login(user_in.login)
+            existing = await service.get_user_by_login(user_in.login)
             if existing:
                 raise HTTPException(status_code=400, detail="Email already registered")
 
@@ -41,7 +41,7 @@ class AuthRoutes:
             auth_service: AuthService = Depends(get_auth_service)
         ):
             user = await auth_service.authenticate_user(form_data.username, form_data.password)
-            token = auth_service.create_access_token(subject=user.id)
+            token = auth_service.create_access_token(subject=str(user.id))
             return Token(access_token=token, token_type="bearer")
 
 

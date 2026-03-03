@@ -1,13 +1,10 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
 
 class UserBase(BaseModel):
-    email: EmailStr
-    surname: str
-    name: str
-    patr: Optional[str] = None
+    login: str
     is_admin: bool = False
 
 
@@ -16,7 +13,7 @@ class UserCreate(UserBase):
 
 
 class UserUpdate(BaseModel):
-    email: Optional[EmailStr] = None
+    login: Optional[str] = None
     surname: Optional[str] = None
     name: Optional[str] = None
     patr: Optional[str] = None
@@ -38,5 +35,5 @@ class Token(BaseModel):
 
 
 class TokenPayload(BaseModel):
-    sub: str  # email
+    sub: str
     exp: int | None = None

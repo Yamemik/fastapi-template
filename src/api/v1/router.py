@@ -1,10 +1,10 @@
 from fastapi import APIRouter
 
-from src.modules.auth.api.router import router as auth_router
-from src.modules.users.api import router as users_router
+from src.modules.users.routes import UserRoutes, AuthRoutes
 
 
-api_router = APIRouter()
+api_router = APIRouter(prefix="/api/v1")
 
-api_router.include_router(auth_router)
-api_router.include_router(users_router)
+# создаём экземпляры классов и подключаем их роутеры
+api_router.include_router(AuthRoutes().router)
+api_router.include_router(UserRoutes().router)

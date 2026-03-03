@@ -14,8 +14,8 @@ class UserService:
     async def get_user(self, user_id: int) -> User | None:
         return await self.repo.get_by_id(user_id)
 
-    async def get_user_by_email(self, email: str) -> User | None:
-        return await self.repo.get_by_email(email)
+    async def get_user_by_login(self, login: str) -> User | None:
+        return await self.repo.get_by_login(login)
 
     async def get_users(self, skip: int = 0, limit: int = 100):
         return await self.repo.get_all(skip, limit)
@@ -24,7 +24,7 @@ class UserService:
         hashed_password = get_password_hash(user_data.password)
 
         user = User(
-            email=user_data.email,
+            login=user_data.login,
             hashed_password=hashed_password,
             surname=user_data.surname,
             name=user_data.name,
