@@ -19,6 +19,12 @@ class UserRepository:
         )
         return result.scalar_one_or_none()
 
+    async def get_by_email(self, email: str) -> User | None:
+        result = await self.db.execute(
+            select(User).where(User.email == email)
+        )
+        return result.scalar_one_or_none()
+
     async def get_all(self, skip: int = 0, limit: int = 100) -> list[User]:
         result = await self.db.execute(
             select(User).offset(skip).limit(limit)
@@ -29,4 +35,4 @@ class UserRepository:
         self.db.add(user)
 
     async def delete(self, user: User) -> None:
-        await self.db.delete(user)
+        self.db.delete(user)

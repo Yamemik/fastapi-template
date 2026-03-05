@@ -11,7 +11,7 @@ class UserService:
     def __init__(self, repo: UserRepository):
         self.repo = repo
 
-    async def get_user(self, user_id: int) -> User | None:
+    async def get_user_by_id(self, user_id: int) -> User | None:
         return await self.repo.get_by_id(user_id)
 
     async def get_user_by_login(self, login: str) -> User | None:
@@ -25,6 +25,7 @@ class UserService:
 
         user = User(
             login=user_data.login,
+            email=user_data.email,
             hashed_password=hashed_password,
             surname=user_data.surname,
             name=user_data.name,
@@ -74,8 +75,9 @@ class UserService:
             return user
 
         superuser = User(
+            login=settings.SUPERUSER_NAME,
             email=settings.SUPERUSER_EMAIL,
-            hashed_password=get_password_hash(settings.SUPERUSER_PASSWORD),
+            hashed_password=get_password_hash(settings.SUPERUSER_PASSWORD or ""),
             surname="Admin",
             name="Admin",
             is_admin=True,

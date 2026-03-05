@@ -5,9 +5,16 @@ from fastapi.security import OAuth2PasswordRequestForm
 
 from src.modules.users.auth_service import AuthService
 
-from .schemas import UserCreate, UserUpdate, UserOut, UserOutWithoutToken, Token
+from .schemas import (
+    UserCreate,
+    UserUpdate,
+    UserOut,
+    UserOutWithoutToken,
+    UserWithToken,
+    Token,
+)
 from .models import User
-from .dependencies import get_auth_service, get_current_user, get_user_service  # <- сервис через Depends
+from .dependencies import get_auth_service, get_current_user, get_user_service
 from .service import UserService
 
 
@@ -17,10 +24,14 @@ class AuthRoutes:
         self._register_routes()
 
     def _register_routes(self):
-        @self.router.post("/register", response_model=UserOut, status_code=status.HTTP_201_CREATED)
+        @self.router.post(
+            "/register",
+            response_model=UserWithToken,
+            status_code=status.HTTP_201_CREATED,
+        )
         async def register(user_in: UserCreate,
                            service: UserService = Depends(get_user_service),
-                           auth_service: AuthService = Depends(get_user_service)):
+                           auth_service: AuthService = Depends(get_auth_service)):
             existing = await service.get_user_by_login(user_in.login)
             if existing:
                 raise HTTPException(status_code=400, detail="Email already registered")
@@ -28,12 +39,16 @@ class AuthRoutes:
             user = await service.create_user(user_in)
             access_token = auth_service.create_access_token(subject=str(user.id))
 
-            return {
-                "id": user.id,
-                "login": user.login,
-                "created_at": user.created_at,
-                "access_token": access_token,
-            }
+            return UserWithToken(
+                id=user.id,
+                login=user.login,
+                surname=user.surname,
+                name=user.name,
+                patr=user.patr,
+                is_admin=user.is_admin,
+                created_at=user.created_at,
+                access_token=access_token,
+            )
 
         @self.router.post("/login", response_model=Token)
         async def login(

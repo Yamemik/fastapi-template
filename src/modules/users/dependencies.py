@@ -1,28 +1,15 @@
-from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from modules.users.auth_service import AuthService
-from src.db.session import get_db
-from .repository import UserRepository
-from .service import UserService
-
-
-def get_user_repository(
-    db: AsyncSession = Depends(get_db),
-) -> UserRepository:
-    return UserRepository(db)
-
-
-def get_user_service(
-    repo: UserRepository = Depends(get_user_repository),
-) -> UserService:
-    return UserService(repo)
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from jose.exceptions import ExpiredSignatureError
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config.settings import settings
-from src.modules.users.models import User
+from src.db.session import get_db
+from .auth_service import AuthService
+from .models import User
+from .repository import UserRepository
+from .service import UserService
 
 
 def get_user_repository(
@@ -47,11 +34,11 @@ oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="/api/v1/auth/login"
 )
 
+
 async def get_current_user(
     token: str = Depends(oauth2_scheme),
     service: UserService = Depends(get_user_service),
 ) -> User:
-
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid credentials",
@@ -73,7 +60,6 @@ async def get_current_user(
             user_id = int(user_id_str)
         except ValueError:
             raise credentials_exception
-        
 
     except ExpiredSignatureError:
         raise HTTPException(
