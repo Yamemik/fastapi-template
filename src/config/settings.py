@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     # database
     DATABASE_URL: str
     DATABASE_URL_SYNC: str
-    USE_MIGRATIONS: bool = True
+    USE_MIGRATIONS: bool = False
 
     # superuser
     SUPERUSER_NAME: str = "admin"
