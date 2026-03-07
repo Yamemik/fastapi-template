@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.modules.users.routes import UserRoutes, AuthRoutes
+from features.users.api.user_routes import UserRoutes, AuthRoutes
 
 
 api_router = APIRouter(prefix="/api/v1")

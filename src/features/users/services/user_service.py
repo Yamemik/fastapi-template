@@ -2,9 +2,9 @@
 
 from src.config.settings import settings
 from src.common.security import get_password_hash
-from .repository import UserRepository
-from .models import User
-from .schemas import UserCreate, UserUpdate
+from ..models.user_repository import UserRepository
+from ..models.user_models import User
+from ..schemas.user_schema import UserCreate, UserUpdate
 
 
 class UserService:

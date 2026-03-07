@@ -3,9 +3,9 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 
-from src.modules.users.auth_service import AuthService
+from features.users.services.auth_service import AuthService
 
-from .schemas import (
+from ..schemas.user_schema import (
     UserCreate,
     UserUpdate,
     UserOut,
@@ -13,9 +13,9 @@ from .schemas import (
     UserWithToken,
     Token,
 )
-from .models import User
-from .dependencies import get_auth_service, get_current_user, get_user_service
-from .service import UserService
+from ..models.user_models import User
+from ..dependencies import get_auth_service, get_current_user, get_user_service
+from ..services.user_service import UserService
 
 
 class AuthRoutes:

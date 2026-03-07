@@ -6,10 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config.settings import settings
 from src.db.session import get_db
-from .auth_service import AuthService
-from .models import User
-from .repository import UserRepository
-from .service import UserService
+from .services.auth_service import AuthService
+from .models.user_models import User
+from .models.user_repository import UserRepository
+from .services.user_service import UserService
 
 
 def get_user_repository(

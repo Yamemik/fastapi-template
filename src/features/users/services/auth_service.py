@@ -5,8 +5,8 @@ from fastapi import HTTPException, status
 
 from src.config.settings import settings
 from src.common.security import verify_password
-from .repository import UserRepository
-from .models import User
+from ..models.user_repository import UserRepository
+from ..models.user_models import User
 
 
 class AuthService:

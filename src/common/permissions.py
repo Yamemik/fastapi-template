@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from src.modules.users.models import User as AuthUser
+from features.users.models.user_models import User as AuthUser
 
 
 def check_admin(user: AuthUser):
