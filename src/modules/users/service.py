@@ -69,7 +69,7 @@ class UserService:
         return True
 
     async def create_superuser_if_not_exists(self) -> User:
-        user = await self.repo.get_by_email(settings.SUPERUSER_EMAIL)
+        user = await self.repo.get_by_login(settings.SUPERUSER_NAME)
 
         if user:
             return user
